@@ -1,0 +1,2 @@
+import java.util.*;
+public class Question_12{record Scan(String tracking,String hub){}public static void main(String[]x){List<Scan>a=List.of(new Scan("TRK101","CHN"),new Scan("TRK102","BLR"),new Scan("TRK101","CHN"),new Scan("TRK101","HYD"));Map<String,Set<String>>seen=new HashMap<>();for(Scan s:a){Set<String>h=seen.computeIfAbsent(s.tracking(),k->new HashSet<>());if(!h.add(s.hub()))System.out.println("REPEATED SCAN: "+s.tracking()+" at "+s.hub());}System.out.println("Tracking lookup TRK102: "+seen.containsKey("TRK102"));}}
