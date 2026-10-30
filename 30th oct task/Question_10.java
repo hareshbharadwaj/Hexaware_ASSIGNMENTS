@@ -1,0 +1,2 @@
+import java.util.*;
+public class Question_10{public static void main(String[]x){int[]a={101,104,109,115},b={102,104,110,120},m=new int[a.length+b.length];int i=0,j=0,k=0;while(i<a.length&&j<b.length){if(a[i]<=b[j])m[k++]=a[i++];else m[k++]=b[j++];}while(i<a.length)m[k++]=a[i++];while(j<b.length)m[k++]=b[j++];System.out.println("Merged claims: "+Arrays.toString(m));}}
