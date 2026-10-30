@@ -1,0 +1,2 @@
+import java.util.*;
+public class Question_07{static String normalize(String s){return s.replaceAll("\\s+","").toUpperCase(Locale.ROOT);}public static void main(String[]x){String[]p={" ab 120 ","AB120","xy-450"},d={"2026-10-01","2026-10-01","2026-10-02"};Set<String>seen=new HashSet<>();for(int i=0;i<p.length;i++){String k=normalize(p[i])+"|"+d[i];if(!seen.add(k))System.out.println("DUPLICATE CLAIM: "+k);else System.out.println("ACCEPTED: "+k);}}}
