@@ -1,0 +1,4 @@
+import java.util.*;
+public class Question_02 {
+static class ChainedHash{List<String>[]b;@SuppressWarnings("unchecked")ChainedHash(int n){b=new ArrayList[n];for(int i=0;i<n;i++)b[i]=new ArrayList<>();}int index(String s){return Math.floorMod(s.hashCode(),b.length);}void put(String s){b[index(s)].add(s);}boolean contains(String s){return b[index(s)].contains(s);}}
+public static void main(String[]x){ChainedHash t=new ChainedHash(5);t.put("SKU-100");t.put("SKU-105");System.out.println("Collision bucket: "+t.index("SKU-100")+" and "+t.index("SKU-105"));System.out.println("Chaining lookup SKU-105: "+t.contains("SKU-105"));Map<String,Integer>m=new HashMap<>();for(int i=0;i<100000;i++)m.put("SKU-"+i,i);long s=System.nanoTime();for(int i=0;i<100000;i++)m.get("SKU-"+i);System.out.println("HashMap records: "+m.size());System.out.println("100000 lookups ns: "+(System.nanoTime()-s));}}
