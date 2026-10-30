@@ -1,0 +1,1 @@
+public class Question_05{public static void main(String[]x){int[]a={10,20,30,40,50,60,70};int target=90,l=0,r=a.length-1;while(l<r){int s=a[l]+a[r];if(s==target){System.out.println(a[l]+" + "+a[r]);l++;r--;}else if(s<target)l++;else r--;}}}
