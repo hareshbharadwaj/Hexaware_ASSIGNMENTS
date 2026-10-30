@@ -1,0 +1,1 @@
+public class Question_09{public static void main(String[]x){int[]a={80,120,135,150,90,110,125,140,160,70,105,115};int best=0,cur=0,end=-1;for(int i=0;i<a.length;i++){if(a[i]>100){cur++;if(cur>best){best=cur;end=i;}}else cur=0;}System.out.println("Longest run length: "+best);System.out.println("Day indexes: "+(end-best+1)+" to "+end);}}
