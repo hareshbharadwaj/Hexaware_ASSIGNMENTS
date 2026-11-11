@@ -1,0 +1,10 @@
+erDiagram
+  SUPPLIER ||--o{ PRODUCT : supplies
+  CATEGORY ||--o{ PRODUCT : classifies
+  PRODUCT ||--o{ INVENTORY : stocked_at
+  WAREHOUSE ||--o{ INVENTORY : stores
+  SUPPLIER { int supplier_id PK }
+  CATEGORY { int category_id PK }
+  PRODUCT { string sku PK int supplier_id FK int category_id FK }
+  WAREHOUSE { int warehouse_id PK }
+  INVENTORY { string sku PK,FK int warehouse_id PK,FK int quantity }
