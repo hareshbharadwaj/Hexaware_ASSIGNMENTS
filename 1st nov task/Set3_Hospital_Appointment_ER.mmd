@@ -1,0 +1,12 @@
+erDiagram
+  PATIENT ||--o{ APPOINTMENT : books
+  DOCTOR ||--o{ APPOINTMENT : attends
+  DEPARTMENT ||--o{ DOCTOR : groups
+  DOCTOR ||--o{ DOCTOR_SLOT : offers
+  APPOINTMENT ||--o| REMINDER : triggers
+  PATIENT { int patient_id PK }
+  DEPARTMENT { int department_id PK }
+  DOCTOR { int doctor_id PK int department_id FK }
+  DOCTOR_SLOT { int slot_id PK int doctor_id FK datetime start_time }
+  APPOINTMENT { int appointment_id PK int patient_id FK int doctor_id FK int slot_id FK string status }
+  REMINDER { int reminder_id PK int appointment_id FK }
