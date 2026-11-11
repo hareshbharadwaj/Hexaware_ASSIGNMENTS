@@ -1,0 +1,27 @@
+-- SET 2: BANK BRANCH ACCOUNTS | MySQL 8.4
+CREATE DATABASE IF NOT EXISTS bank_branch;
+USE bank_branch;
+CREATE TABLE customers(customer_id INT AUTO_INCREMENT PRIMARY KEY,customer_name VARCHAR(100) NOT NULL,address_line VARCHAR(200) NOT NULL) ENGINE=InnoDB;
+CREATE TABLE branches(branch_id INT AUTO_INCREMENT PRIMARY KEY,branch_name VARCHAR(100) NOT NULL UNIQUE,branch_code CHAR(5) NOT NULL UNIQUE) ENGINE=InnoDB;
+CREATE TABLE account_types(account_type_id INT AUTO_INCREMENT PRIMARY KEY,type_name VARCHAR(20) NOT NULL UNIQUE,CHECK(type_name IN ('SAVINGS','CURRENT','SALARY','FIXED_DEPOSIT'))) ENGINE=InnoDB;
+CREATE TABLE relationship_managers(manager_id INT AUTO_INCREMENT PRIMARY KEY,manager_name VARCHAR(100) NOT NULL,email VARCHAR(120) NOT NULL UNIQUE) ENGINE=InnoDB;
+CREATE TABLE accounts(account_id BIGINT AUTO_INCREMENT PRIMARY KEY,account_number VARCHAR(20) NOT NULL UNIQUE,customer_id INT NOT NULL,account_type_id INT NOT NULL,branch_id INT NOT NULL,manager_id INT NOT NULL,opened_on DATE NOT NULL,balance DECIMAL(15,2) NOT NULL DEFAULT 0.00,CONSTRAINT fk_account_customer FOREIGN KEY(customer_id) REFERENCES customers(customer_id),CONSTRAINT fk_account_type FOREIGN KEY(account_type_id) REFERENCES account_types(account_type_id),CONSTRAINT fk_account_branch FOREIGN KEY(branch_id) REFERENCES branches(branch_id),CONSTRAINT fk_account_manager FOREIGN KEY(manager_id) REFERENCES relationship_managers(manager_id),CONSTRAINT chk_account_balance CHECK(balance>=0)) ENGINE=InnoDB;
+INSERT INTO customers(customer_name,address_line) VALUES ('Ananya Rao','Adyar, Chennai'),('Bala Kumar','Anna Nagar, Chennai'),('Charan Das','Velachery, Chennai'),('Divya S','Tambaram, Chennai'),('Eshan P','Porur, Chennai'),('Farah N','Guindy, Chennai'),('Gokul R','Mylapore, Chennai'),('Harini V','Perungudi, Chennai'),('Irfan A','Avadi, Chennai'),('Janani M','OMR, Chennai');
+INSERT INTO branches(branch_name,branch_code) VALUES ('Adyar Branch','ADY01'),('Anna Nagar Branch','ANN01'),('Velachery Branch','VEL01'),('Tambaram Branch','TAM01'),('Porur Branch','POR01'),('Guindy Branch','GUI01'),('Mylapore Branch','MYL01'),('Perungudi Branch','PER01'),('Avadi Branch','AVA01'),('OMR Branch','OMR01');
+INSERT INTO account_types(type_name) VALUES ('SAVINGS'),('CURRENT'),('SALARY'),('FIXED_DEPOSIT');
+INSERT INTO relationship_managers(manager_name,email) VALUES ('Meera Iyer','meera@example.com'),('Naveen Raj','naveen@example.com'),('Priya K','priya@example.com'),('Rahul S','rahul@example.com'),('Sana M','sana@example.com'),('Thomas J','thomas@example.com'),('Uma R','uma@example.com'),('Vikram P','vikram@example.com'),('Wafa A','wafa@example.com'),('Yash D','yash@example.com');
+INSERT INTO accounts(account_number,customer_id,account_type_id,branch_id,manager_id,opened_on,balance) VALUES ('AC100001',1,1,1,1,'2026-09-05',25000.00),('AC100002',2,2,2,2,'2026-09-12',150000.00),('AC100003',3,1,3,3,'2026-10-01',42000.50),('AC100004',4,3,4,4,'2026-10-08',18000.00),('AC100005',5,4,5,5,'2026-10-15',250000.00),('AC100006',6,1,6,6,'2026-10-22',32000.00),('AC100007',7,2,7,7,'2026-11-01',90000.00),('AC100008',8,1,8,8,'2026-11-04',51000.00),('AC100009',9,3,9,9,'2026-11-06',12000.00),('AC100010',10,1,10,10,'2026-11-09',76000.00);
+SELECT * FROM accounts WHERE account_number='AC100001';
+UPDATE accounts SET balance=balance+500 WHERE account_number='AC100001';
+DELETE FROM accounts WHERE account_number='AC100009';
+SELECT a.account_number,c.customer_name,b.branch_name,t.type_name,a.opened_on,a.balance FROM accounts a JOIN customers c ON a.customer_id=c.customer_id JOIN branches b ON a.branch_id=b.branch_id JOIN account_types t ON a.account_type_id=t.account_type_id WHERE a.opened_on BETWEEN '2026-10-01' AND '2026-12-31' AND a.balance>20000 AND (t.type_name IN ('SAVINGS','SALARY') OR c.customer_name LIKE 'A%');
+CREATE TABLE ddl_test(id INT AUTO_INCREMENT PRIMARY KEY,note VARCHAR(40)) ENGINE=InnoDB;
+INSERT INTO ddl_test(note) VALUES('first'),('second');
+DELETE FROM ddl_test WHERE id=1;
+INSERT INTO ddl_test(note) VALUES('after delete');
+TRUNCATE TABLE ddl_test;
+INSERT INTO ddl_test(note) VALUES('after truncate');
+DROP TABLE ddl_test;
+ALTER TABLE accounts ADD COLUMN kyc_status ENUM('PENDING','VERIFIED','REJECTED') NOT NULL DEFAULT 'PENDING';
+RENAME TABLE relationship_managers TO account_managers;
+ALTER TABLE accounts DROP CHECK chk_account_balance;
