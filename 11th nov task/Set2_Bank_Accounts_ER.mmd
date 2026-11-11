@@ -1,0 +1,10 @@
+erDiagram
+  CUSTOMER ||--o{ ACCOUNT : owns
+  ACCOUNT_TYPE ||--o{ ACCOUNT : classifies
+  BRANCH ||--o{ ACCOUNT : hosts
+  RELATIONSHIP_MANAGER ||--o{ ACCOUNT : manages
+  CUSTOMER { int customer_id PK }
+  ACCOUNT_TYPE { int account_type_id PK }
+  BRANCH { int branch_id PK }
+  RELATIONSHIP_MANAGER { int manager_id PK }
+  ACCOUNT { bigint account_id PK string account_number UK int customer_id FK int account_type_id FK int branch_id FK int manager_id FK decimal balance }
