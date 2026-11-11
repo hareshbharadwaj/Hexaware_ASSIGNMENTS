@@ -1,0 +1,25 @@
+-- SET 3: HOSPITAL PATIENT RECORDS | MySQL 8.4
+CREATE DATABASE IF NOT EXISTS hospital_records;
+USE hospital_records;
+CREATE TABLE patients(patient_id INT AUTO_INCREMENT PRIMARY KEY,patient_name VARCHAR(100) NOT NULL,address_line VARCHAR(200) NOT NULL,phone VARCHAR(20) UNIQUE) ENGINE=InnoDB;
+CREATE TABLE departments(department_id INT AUTO_INCREMENT PRIMARY KEY,department_name VARCHAR(100) NOT NULL UNIQUE) ENGINE=InnoDB;
+CREATE TABLE doctors(doctor_id INT AUTO_INCREMENT PRIMARY KEY,doctor_name VARCHAR(100) NOT NULL,department_id INT NOT NULL,CONSTRAINT fk_doctor_department FOREIGN KEY(department_id) REFERENCES departments(department_id) ON DELETE RESTRICT ON UPDATE CASCADE) ENGINE=InnoDB;
+CREATE TABLE visits(visit_id BIGINT AUTO_INCREMENT PRIMARY KEY,patient_id INT NOT NULL,doctor_id INT NOT NULL,visit_date DATE NOT NULL,diagnosis VARCHAR(255) NOT NULL,prescription TEXT,status ENUM('OPEN','IN_PROGRESS','CLOSED') NOT NULL DEFAULT 'OPEN',CONSTRAINT fk_visit_patient FOREIGN KEY(patient_id) REFERENCES patients(patient_id),CONSTRAINT fk_visit_doctor FOREIGN KEY(doctor_id) REFERENCES doctors(doctor_id),CHECK(visit_date<=CURRENT_DATE)) ENGINE=InnoDB;
+CREATE TABLE billing(billing_id BIGINT AUTO_INCREMENT PRIMARY KEY,visit_id BIGINT NOT NULL UNIQUE,bill_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00,paid_amount DECIMAL(12,2) NOT NULL DEFAULT 0.00,CONSTRAINT fk_billing_visit FOREIGN KEY(visit_id) REFERENCES visits(visit_id),CHECK(bill_amount>=0),CHECK(paid_amount>=0 AND paid_amount<=bill_amount)) ENGINE=InnoDB;
+INSERT INTO patients(patient_name,address_line,phone) VALUES ('Aarav N','Adyar, Chennai','9000000101'),('Bhavana R','Anna Nagar, Chennai','9000000102'),('Chandru P','Velachery, Chennai','9000000103'),('Deepa S','Tambaram, Chennai','9000000104'),('Ezhil K','Porur, Chennai','9000000105'),('Fathima A','Guindy, Chennai','9000000106'),('Girish M','Mylapore, Chennai','9000000107'),('Hema V','Perungudi, Chennai','9000000108'),('Imran T','Avadi, Chennai','9000000109'),('Jaya L','OMR, Chennai','9000000110');
+INSERT INTO departments(department_name) VALUES ('Cardiology'),('Neurology'),('Orthopaedics'),('Dermatology'),('Paediatrics'),('ENT'),('Oncology'),('General Medicine'),('Ophthalmology'),('Urology');
+INSERT INTO doctors(doctor_name,department_id) VALUES ('Dr Asha',1),('Dr Bharat',2),('Dr Charu',3),('Dr Deepak',4),('Dr Esha',5),('Dr Farooq',6),('Dr Geetha',7),('Dr Hari',8),('Dr Indu',9),('Dr Jai',10);
+INSERT INTO visits(patient_id,doctor_id,visit_date,diagnosis,prescription) VALUES (1,1,'2026-10-01','Hypertension','Lifestyle advice'),(2,2,'2026-10-03','Migraine','Prescribed medication'),(3,3,'2026-10-05','Knee pain','Physiotherapy'),(4,4,'2026-10-07','Dermatitis','Topical cream'),(5,5,'2026-10-09','Fever','Fluids and rest'),(6,6,'2026-10-11','Sinusitis','Nasal spray'),(7,7,'2026-10-13','Follow-up review','Continue treatment'),(8,8,'2026-10-15','Diabetes review','Diet monitoring'),(9,9,'2026-10-17','Eye strain','Eye drops'),(10,10,'2026-10-19','Renal review','Lab follow-up');
+INSERT INTO billing(visit_id,bill_amount,paid_amount) VALUES (1,800.00,800.00),(2,1200.00,500.00),(3,1500.00,1500.00),(4,700.00,0.00),(5,500.00,500.00),(6,900.00,900.00),(7,600.00,300.00),(8,1000.00,1000.00),(9,750.00,750.00),(10,1800.00,1000.00);
+SELECT * FROM visits WHERE visit_id=1;
+UPDATE visits SET status='CLOSED' WHERE visit_id=1;
+DELETE FROM billing WHERE visit_id=10;
+DELETE FROM visits WHERE visit_id=10;
+SELECT DISTINCT p.patient_id,p.patient_name,v.visit_date FROM patients p JOIN visits v ON p.patient_id=v.patient_id WHERE v.visit_date>='2026-10-01' AND v.visit_date<'2026-11-01' ORDER BY v.visit_date;
+SELECT d.doctor_name,dep.department_name FROM doctors d JOIN departments dep ON d.department_id=dep.department_id ORDER BY dep.department_name,d.doctor_name;
+CREATE DATABASE IF NOT EXISTS hospital_training;
+USE hospital_training;
+CREATE TABLE demo_table(id INT PRIMARY KEY,note VARCHAR(40));
+RENAME TABLE demo_table TO renamed_demo_table;
+DROP DATABASE hospital_training;
+CREATE DATABASE hospital_training;
