@@ -1,0 +1,10 @@
+erDiagram
+  PATIENT ||--o{ VISIT : attends
+  DOCTOR ||--o{ VISIT : conducts
+  DEPARTMENT ||--o{ DOCTOR : contains
+  VISIT ||--o| BILLING : billed_by
+  PATIENT { int patient_id PK }
+  DEPARTMENT { int department_id PK }
+  DOCTOR { int doctor_id PK int department_id FK }
+  VISIT { bigint visit_id PK int patient_id FK int doctor_id FK date visit_date }
+  BILLING { bigint billing_id PK bigint visit_id FK decimal bill_amount }
