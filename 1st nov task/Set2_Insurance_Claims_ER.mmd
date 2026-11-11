@@ -1,0 +1,12 @@
+erDiagram
+  POLICYHOLDER ||--o{ POLICY : owns
+  POLICY ||--o{ CLAIM : covers
+  CLAIM ||--o{ CLAIM_DOCUMENT : includes
+  CLAIM ||--o{ CLAIM_STATUS_HISTORY : records
+  CLAIM ||--o| SETTLEMENT : resolved_by
+  POLICYHOLDER { int policyholder_id PK }
+  POLICY { int policy_id PK int policyholder_id FK }
+  CLAIM { int claim_id PK int policy_id FK string status }
+  CLAIM_DOCUMENT { int document_id PK int claim_id FK }
+  CLAIM_STATUS_HISTORY { int history_id PK int claim_id FK }
+  SETTLEMENT { int settlement_id PK int claim_id FK decimal amount }
