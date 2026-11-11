@@ -1,0 +1,12 @@
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ ORDER_ITEM : contains
+  PRODUCT ||--o{ ORDER_ITEM : selected_in
+  CUSTOMER ||--o{ DELIVERY_ADDRESS : owns
+  ORDER ||--o| DELIVERY : fulfilled_by
+  CUSTOMER { int customer_id PK }
+  PRODUCT { int product_id PK string name decimal price int available_quantity }
+  ORDER { int order_id PK int customer_id FK int address_id FK }
+  ORDER_ITEM { int order_id PK,FK int product_id PK,FK int quantity }
+  DELIVERY_ADDRESS { int address_id PK int customer_id FK }
+  DELIVERY { int delivery_id PK int order_id FK string status }
