@@ -35,10 +35,17 @@ FROM products p JOIN order_items oi ON oi.product_id=p.product_id GROUP BY p.cat
 SELECT o.order_date,ROUND(SUM(oi.quantity*oi.unit_price),2) AS daily_sales
 FROM orders o JOIN order_items oi ON oi.order_id=o.order_id
 GROUP BY o.order_date ORDER BY daily_sales DESC LIMIT 1;
--- NULL demonstration: COUNT(*) counts rows; COUNT(column), SUM and AVG ignore NULL.
-SELECT COUNT(*) AS all_rows,COUNT(payment_status) AS known_statuses,
- SUM(CASE WHEN payment_status IS NULL THEN 1 ELSE 0 END) AS null_status_rows FROM orders;
-SELECT COUNT(payment_status) AS non_null_statuses,
- SUM(CASE WHEN payment_status IS NULL THEN 0 ELSE 1 END) AS non_null_sum,
- AVG(CASE WHEN payment_status IS NULL THEN NULL ELSE 1 END) AS avg_non_null_flag FROM orders;
+-- NULL demonstration using customers with and without orders.
+-- COUNT(*) counts customer rows; COUNT(order_value), SUM and AVG ignore NULL order values.
+SELECT COUNT(*) AS customer_rows,
+       COUNT(t.order_value) AS customers_with_orders,
+       SUM(t.order_value) AS sum_ignoring_nulls,
+       AVG(t.order_value) AS avg_ignoring_nulls,
+       SUM(COALESCE(t.order_value, 0)) AS sum_after_coalesce
+FROM customers c
+LEFT JOIN (
+  SELECT o.customer_id, SUM(oi.quantity * oi.unit_price) AS order_value
+  FROM orders o JOIN order_items oi ON oi.order_id = o.order_id
+  GROUP BY o.customer_id
+) t ON t.customer_id = c.customer_id;
 -- WHERE filters rows before grouping; HAVING filters groups after aggregation.
