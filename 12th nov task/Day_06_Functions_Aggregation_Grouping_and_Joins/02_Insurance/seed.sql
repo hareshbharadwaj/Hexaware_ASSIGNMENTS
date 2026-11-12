@@ -1,0 +1,14 @@
+USE day6_insurance;
+INSERT INTO customers VALUES
+(1,'Asha Menon','1988-04-12'),(2,'Rahul Das','1975-08-21'),
+(3,'Nila Joseph','1998-11-02'),(4,'Vikram Rao','1965-02-14');
+INSERT INTO agents VALUES (1,'Priya Agent'),(2,'Sanjay Agent'),(3,'Farah Agent');
+INSERT INTO products VALUES (1,'Health'),(2,'Life'),(3,'Motor');
+INSERT INTO policies VALUES
+(101,'POL-2026-001',1,1,1,'2025-12-01','2026-12-01',18000,'ACTIVE'),
+(102,'POL-2026-002',1,2,1,'2026-01-10','2027-01-10',25000,'ACTIVE'),
+(103,'POL-2026-003',2,1,2,'2026-02-01','2026-11-25',22000,'ACTIVE'),
+(104,'POL-2026-004',3,3,3,'2026-03-15','2027-03-15',12000,'ACTIVE'),
+(105,'POL-2026-005',4,2,2,'2024-06-01','2025-06-01',30000,'EXPIRED');
+INSERT INTO claims VALUES
+(1,101,9000,'2026-05-01'),(2,103,15000,'2026-07-10'),(3,104,2000,'2026-08-15');
