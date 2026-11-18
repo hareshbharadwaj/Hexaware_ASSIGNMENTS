@@ -19,10 +19,10 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Set-based equivalent:
-INSERT INTO subscriber_notifications(subscriber_id,message)
-SELECT subscriber_id,'Your prepaid balance is below 50 units'
-FROM subscribers WHERE subscriber_type='PREPAID' AND balance<50;
+-- Set-based equivalent (run this OR the cursor procedure, not both):
+-- INSERT INTO subscriber_notifications(subscriber_id,message)
+-- SELECT subscriber_id,'Your prepaid balance is below 50 units'
+-- FROM subscribers WHERE subscriber_type='PREPAID' AND balance<50;
 
 DELIMITER $$
 CREATE PROCEDURE sp_safe_recharge_check(IN p_amount DECIMAL(10,2))
