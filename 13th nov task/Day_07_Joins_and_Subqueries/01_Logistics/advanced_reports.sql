@@ -77,10 +77,9 @@ SELECT ca.carrier_name,AVG(DATEDIFF(s.delivered_at,s.promised_at)) AS avg_delay_
 FROM carriers ca JOIN shipments s ON s.carrier_id=ca.carrier_id
 WHERE s.delivered_at IS NOT NULL
 GROUP BY ca.carrier_id,ca.carrier_name
-HAVING AVG(DATEDIFF(s.delivered_at,s.promised_at)) > ANY (
+HAVING AVG(DATEDIFF(s.delivered_at,s.promised_at)) > (
   SELECT AVG(DATEDIFF(delivered_at,promised_at))
   FROM shipments WHERE delivered_at IS NOT NULL
-  GROUP BY carrier_id
 );
 
 -- ALL example: carriers whose average shipping cost exceeds every other carrier's average.
