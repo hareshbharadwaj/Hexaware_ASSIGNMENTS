@@ -21,14 +21,14 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Set-based alternative (run instead of cursor version).
-START TRANSACTION;
-INSERT INTO policy_lapse_log(policy_id,message)
-SELECT policy_id,'Policy marked LAPSED by renewal check'
-FROM policies WHERE status='ACTIVE' AND renewal_date<CURDATE();
-UPDATE policies SET status='LAPSED'
-WHERE status='ACTIVE' AND renewal_date<CURDATE();
-COMMIT;
+-- Set-based alternative (run this OR the cursor procedure, not both):
+-- START TRANSACTION;
+-- INSERT INTO policy_lapse_log(policy_id,message)
+-- SELECT policy_id,'Policy marked LAPSED by renewal check'
+-- FROM policies WHERE status='ACTIVE' AND renewal_date<CURDATE();
+-- UPDATE policies SET status='LAPSED'
+-- WHERE status='ACTIVE' AND renewal_date<CURDATE();
+-- COMMIT;
 
 SET @processed=0;
 CALL sp_mark_lapsed_cursor(@processed);
