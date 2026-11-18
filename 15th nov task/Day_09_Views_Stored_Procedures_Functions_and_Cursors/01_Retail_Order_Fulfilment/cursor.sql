@@ -19,11 +19,12 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Set-based equivalent; execute instead of the cursor procedure.
-INSERT INTO order_followups(order_id,note)
-SELECT order_id,'Pending for more than three days'
-FROM orders WHERE status='PENDING'
-AND order_date<NOW()-INTERVAL 3 DAY;
+-- Set-based equivalent (run this OR the cursor procedure, not both):
+-- INSERT INTO order_followups(order_id,note)
+-- SELECT order_id,'Pending for more than three days'
+-- FROM orders WHERE status='PENDING'
+-- AND order_date<NOW()-INTERVAL 3 DAY;
+-- CALL sp_create_old_order_followups();
 
 DELIMITER $$
 CREATE PROCEDURE sp_validate_order(IN p_order_id BIGINT)
